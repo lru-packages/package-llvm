@@ -124,18 +124,20 @@ fetch:
 
 .PHONY: compile
 compile:
-	cd llvm*/build && \
-		cmake -G "Unix Makefiles" \
-			-DCMAKE_BUILD_TYPE=Release \
-			-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
-			-DLLVM_TARGETS_TO_BUILD="X86" \
-			-DLLVM_BUILD_DOCS=true \
-			-DLLVM_ENABLE_SPHINX=true \
-			-DLLVM_ENABLE_DOXYGEN=true \
-			-DLLVM_DOXYGEN_SVG=true \
-			-DLLVM_OPTIMIZED_TABLEGEN=true \
-			.. && \
-		make \
+	cd llvm* && \
+		mkdir -p build && \
+		cd build && \
+			cmake -G "Unix Makefiles" \
+				-DCMAKE_BUILD_TYPE=Release \
+				-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
+				-DLLVM_TARGETS_TO_BUILD="X86" \
+				-DLLVM_BUILD_DOCS=true \
+				-DLLVM_ENABLE_SPHINX=true \
+				-DLLVM_ENABLE_DOXYGEN=true \
+				-DLLVM_DOXYGEN_SVG=true \
+				-DLLVM_OPTIMIZED_TABLEGEN=true \
+				.. && \
+			make \
 	;
 
 #-------------------------------------------------------------------------------
