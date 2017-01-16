@@ -74,7 +74,7 @@ compile:
 				-DCMAKE_BUILD_TYPE=Release \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
 				.. && \
-			make -j$$(nproc) && \
+			make -j$$(nproc) \
 	;
 
 #-------------------------------------------------------------------------------
