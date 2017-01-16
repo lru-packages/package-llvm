@@ -4,6 +4,16 @@ The LLVM Project is a collection of modular and reusable compiler and toolchain 
 
 See <http://releases.llvm.org> for releases.
 
+## Includes
+
+* [LLVM](http://llvm.org)
+* [Clang](http://clang.llvm.org)
+* [LLDB](http://lldb.llvm.org)
+* [libc++](http://libcxx.llvm.org)
+* [compiler-rt](http://compiler-rt.llvm.org)
+* [polly](http://polly.llvm.org)
+* [lld](http://lld.llvm.org)
+
 ## Generating the RPM package
 
 Edit the `Makefile` to ensure that you are setting the intended version, then run `make`.
