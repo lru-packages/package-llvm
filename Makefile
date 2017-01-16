@@ -117,7 +117,7 @@ fetch:
 		cd ../../.. && \
 		cd projects && \
 			svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
-			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx
+			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx \
 	;
 
 #-------------------------------------------------------------------------------
