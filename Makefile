@@ -45,12 +45,46 @@ clean:
 install-deps:
 
 	yum -y install \
+		bison \
+		flex \
+		bc \
+		boost-atomic \
+		boost-chrono \
+		boost-context \
+		boost-date-time \
+		boost-devel \
+		boost-filesystem \
+		boost-graph \
+		boost-graph-mpich \
+		boost-graph-openmpi \
+		boost-iostreams \
+		boost-jam \
+		boost-locale \
+		boost-math \
+		boost-mpich-devel \
+		boost-mpich-python \
+		boost-openmpi-devel \
+		boost-openmpi-python \
+		boost-program-options \
+		boost-python \
+		boost-random \
+		boost-regex \
+		boost-serialization \
+		boost-signals \
+		boost-static \
+		boost-system \
+		boost-test \
+		boost-thread \
+		boost-timer \
+		boost-wave \
 		bzip2 \
 		cmake \
 		doxygen \
 		gcc \
+		git \
 		golang \
 		gzip \
+		libcap-devel \
 		libedit-devel \
 		libxml2-devel \
 		make \
@@ -58,6 +92,7 @@ install-deps:
 		python-devel \
 		python27 \
 		sed \
+		subversion \
 		swig \
 		unzip \
 		valgrind-devel \
