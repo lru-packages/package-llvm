@@ -143,7 +143,7 @@ compile:
 .PHONY: install-tmp
 install-tmp:
 	mkdir -p /tmp/installdir-$(NAME)-$(VERSION);
-	cd llvm*/build && \
+	cd llvm* && cd build && \
 		make install DESTDIR=/tmp/installdir-$(NAME)-$(VERSION);
 
 #-------------------------------------------------------------------------------
