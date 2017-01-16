@@ -100,8 +100,6 @@ install-deps:
 		zlib-devel \
 	;
 
-	/bin/pip install --upgrade sphinx;
-
 #-------------------------------------------------------------------------------
 
 .PHONY: fetch
@@ -132,10 +130,9 @@ compile:
 				-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
 				-DLLVM_BUILD_DOCS=true \
-				-DLLVM_ENABLE_SPHINX=true \
+				-DLLVM_ENABLE_SPHINX=false \
 				-DLLVM_ENABLE_DOXYGEN=true \
-				-DLLVM_DOXYGEN_SVG=true \
-				-DLLVM_OPTIMIZED_TABLEGEN=true \
+				-DLLVM_OPTIMIZED_TABLEGEN=false \
 				.. && \
 			make \
 	;
