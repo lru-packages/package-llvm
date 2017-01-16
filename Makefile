@@ -51,10 +51,14 @@ install-deps:
 		gcc \
 		golang \
 		gzip \
+		libedit-devel \
+		libxml2-devel \
 		make \
 		ncurses-devel \
+		python-devel \
 		python27 \
 		sed \
+		swig \
 		unzip \
 		valgrind-devel \
 		zip \
