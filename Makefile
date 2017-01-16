@@ -10,6 +10,8 @@ DESCRIPTION="The LLVM Project is a collection of modular and reusable compiler a
 URL=https://llvm.org
 RHEL=$(shell rpm -q --queryformat '%{VERSION}' centos-release)
 
+COMMIT=$(shell echo "$(VERSION)" | sed -e "s/\.//g")
+
 #-------------------------------------------------------------------------------
 
 all: info clean install-deps compile install-tmp package move
@@ -68,13 +70,24 @@ compile:
 	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz
 	tar -xvf llvm-$(VERSION).src.tar.xz
 	cd llvm* && \
+		cd tools && \
+			svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
+		cd .. && \
+		cd tools/clang/tools/ && \
+			svn co http://llvm.org/svn/llvm-project/clang-tools-extra/tags/RELEASE_$(COMMIT)/final extra && \
+		cd ../../.. && \
+		cd projects && \
+			svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
+			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx && \
+		cd .. && \
 		mkdir -p ./build && \
 		cd build && \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_BUILD_TYPE=Release \
+				-DLLVM_ENABLE_PROJECTS=all \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
 				.. && \
-			make -j$$(nproc) \
+			make \
 	;
 
 #-------------------------------------------------------------------------------
