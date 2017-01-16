@@ -14,7 +14,7 @@ COMMIT=$(shell echo "$(VERSION)" | sed -e "s/\.//g")
 
 #-------------------------------------------------------------------------------
 
-all: info clean install-deps compile install-tmp package move
+all: info clean install-deps fetch compile install-tmp package move
 
 #-------------------------------------------------------------------------------
 
@@ -104,8 +104,8 @@ install-deps:
 
 #-------------------------------------------------------------------------------
 
-.PHONY: compile
-compile:
+.PHONY: fetch
+fetch:
 	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz
 	tar -xvf llvm-$(VERSION).src.tar.xz
 	cd llvm* && \
@@ -117,21 +117,25 @@ compile:
 		cd ../../.. && \
 		cd projects && \
 			svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
-			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx && \
-		cd .. && \
-		mkdir -p ./build && \
-		cd build && \
-			cmake -G "Unix Makefiles" \
-				-DCMAKE_BUILD_TYPE=Release \
-				-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
-				-DLLVM_TARGETS_TO_BUILD="X86" \
-				-DLLVM_BUILD_DOCS=true \
-				-DLLVM_ENABLE_SPHINX=true \
-				-DLLVM_ENABLE_DOXYGEN=true \
-				-DLLVM_DOXYGEN_SVG=true \
-				-DLLVM_OPTIMIZED_TABLEGEN=true \
-				.. && \
-			make \
+			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx
+	;
+
+#-------------------------------------------------------------------------------
+
+.PHONY: compile
+compile:
+	cd llvm*/build && \
+		cmake -G "Unix Makefiles" \
+			-DCMAKE_BUILD_TYPE=Release \
+			-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
+			-DLLVM_TARGETS_TO_BUILD="X86" \
+			-DLLVM_BUILD_DOCS=true \
+			-DLLVM_ENABLE_SPHINX=true \
+			-DLLVM_ENABLE_DOXYGEN=true \
+			-DLLVM_DOXYGEN_SVG=true \
+			-DLLVM_OPTIMIZED_TABLEGEN=true \
+			.. && \
+		make \
 	;
 
 #-------------------------------------------------------------------------------
