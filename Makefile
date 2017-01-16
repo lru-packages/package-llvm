@@ -72,22 +72,7 @@ compile:
 		cd build && \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_BUILD_TYPE=Release \
-				-DCMAKE_INSTALL_PREFIX=prefix=/tmp/installdir-llvm-$(VERSION) \
-				-DLLVM_BUILD_DOCS=true \
-				-DLLVM_BUILD_LLVM_DYLIB=true \
-				-DLLVM_ENABLE_CXX1Y=true \
-				-DLLVM_ENABLE_EH=true \
-				-DLLVM_ENABLE_FFI=true \
-				-DLLVM_ENABLE_PROJECTS=all \
-				-DLLVM_ENABLE_RTTI=true \
-				-DLLVM_ENABLE_THREADS=true \
-				-DLLVM_ENABLE_ZLIB=true \
-				-DLLVM_LINK_LLVM_DYLIB=true \
-				-DLLVM_OPTIMIZED_TABLEGEN=true \
-				-DLLVM_TARGET_ARCH=host \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
-				-DLLVM_USE_INTEL_JITEVENTS=true \
-				-DLLVM_USE_OPROFILE=true \
 				.. && \
 			make -j$$(nproc) && \
 	;
@@ -97,7 +82,7 @@ compile:
 .PHONY: install-tmp
 install-tmp:
 	mkdir -p /tmp/installdir-$(NAME)-$(VERSION);
-	cd CMake && \
+	cd llvm*/build && \
 		make install DESTDIR=/tmp/installdir-$(NAME)-$(VERSION);
 
 #-------------------------------------------------------------------------------
@@ -131,6 +116,8 @@ package:
 		--rpm-dist el$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/bin \
+		usr/local/lib \
+		usr/local/include \
 	;
 
 	# Documentation package
