@@ -139,7 +139,7 @@ compile:
 				-DLLVM_BUILD_LLVM_DYLIB=ON \
 				-DLLVM_LINK_LLVM_DYLIB=ON \
 				-DLLVM_ENABLE_FFI=ON \
-				-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;compiler-rt;lldb;lld;polly" \
+				-DLLVM_ENABLE_PROJECTS="all" \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
 				-DLLVM_BUILD_DOCS=OFF \
 				-DLLVM_ENABLE_DOXYGEN=OFF \
