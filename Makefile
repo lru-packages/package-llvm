@@ -37,7 +37,7 @@ info:
 
 .PHONY: clean
 clean:
-	rm -Rf /tmp/installdir* llvm*
+	rm -Rf /tmp/installdir* llvm* polly*
 
 #-------------------------------------------------------------------------------
 
