@@ -45,9 +45,8 @@ clean:
 install-deps:
 
 	yum -y install \
-		bison \
-		flex \
 		bc \
+		bison \
 		boost-atomic \
 		boost-chrono \
 		boost-context \
@@ -78,11 +77,14 @@ install-deps:
 		boost-timer \
 		boost-wave \
 		bzip2 \
+		clang \
 		cmake \
 		doxygen \
+		flex \
 		gcc \
 		git \
 		golang \
+		graphviz \
 		gzip \
 		libcap-devel \
 		libedit-devel \
@@ -104,18 +106,24 @@ install-deps:
 
 .PHONY: fetch
 fetch:
-	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz
-	tar -xvf llvm-$(VERSION).src.tar.xz
+	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz && \
+	tar -xvf llvm-$(VERSION).src.tar.xz && \
+	git clone -q -b svn-tags/RELEASE_391 https://github.com/llvm-mirror/polly.git && \
 	cd llvm* && \
 		cd tools && \
 			svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
+			svn co http://llvm.org/svn/llvm-project/lldb/tags/RELEASE_$(COMMIT)/final lldb && \
+			svn co http://llvm.org/svn/llvm-project/lld/tags/RELEASE_$(COMMIT)/final lld && \
+			cp -Rvf ../../polly/final ./polly && \
 		cd .. && \
 		cd tools/clang/tools/ && \
 			svn co http://llvm.org/svn/llvm-project/clang-tools-extra/tags/RELEASE_$(COMMIT)/final extra && \
 		cd ../../.. && \
 		cd projects && \
 			svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
-			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx \
+			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx && \
+			svn co http://llvm.org/svn/llvm-project/libcxxabi/tags/RELEASE_$(COMMIT)/final libcxxabi && \
+			svn co http://llvm.org/svn/llvm-project/openmp/tags/RELEASE_$(COMMIT)/final openmp \
 	;
 
 #-------------------------------------------------------------------------------
@@ -125,16 +133,41 @@ compile:
 	cd llvm* && \
 		mkdir -p build && \
 		cd build && \
+			CC=gcc CXX=g++ \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_BUILD_TYPE=Release \
-				-DLLVM_ENABLE_PROJECTS="clang;libcxx;lldb;compiler-rt;lld;polly" \
+				-DLLVM_BUILD_LLVM_DYLIB=ON \
+				-DLLVM_LINK_LLVM_DYLIB=ON \
+				-DLLVM_ENABLE_FFI=ON \
+				-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;compiler-rt;lldb;lld;polly" \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
-				-DLLVM_BUILD_DOCS=true \
-				-DLLVM_ENABLE_SPHINX=false \
-				-DLLVM_ENABLE_DOXYGEN=true \
-				-DLLVM_OPTIMIZED_TABLEGEN=false \
-				.. && \
+				-DLLVM_BUILD_DOCS=OFF \
+				-DLLVM_ENABLE_DOXYGEN=OFF \
+				-DLLVM_ENABLE_SPHINX=OFF \
+				-DLLVM_INCLUDE_TESTS=ON \
+				-DLLVM_BUILD_TESTS=ON \
+				-DLLVM_ENABLE_EH=ON \
+				-DLLVM_OPTIMIZED_TABLEGEN=ON \
+				-Wno-dev .. && \
+			make && \
+			make check-polly && \
+			make omp && \
+			cmake \
+				-DLLVM_ENABLE_SPHINX=ON \
+				-DSPHINX_OUTPUT_HTML=ON \
+				-DSPHINX_OUTPUT_MAN=ON \
+				-DSPHINX_WARNINGS_AS_ERRORS=OFF \
+				-Wno-dev .. && \
 			make \
+				docs-llvm-html \
+				docs-llvm-man \
+				docs-clang-html \
+				docs-clang-man \
+			&& \
+			cmake -G Ninja .. && \
+				ninja lldb && \
+				ninja check-lldb && \
+			make lldb-python-doc lldb-cpp-doc \
 	;
 
 #-------------------------------------------------------------------------------
