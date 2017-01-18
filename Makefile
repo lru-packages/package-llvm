@@ -201,6 +201,8 @@ package:
 		-C /tmp/installdir-$(NAME)-$(VERSION) \
 		-m $(MAINTAINER) \
 		--replaces llvm \
+		--replaces lldb \
+		--replaces clang \
 		--epoch $(EPOCH) \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
@@ -256,6 +258,8 @@ package:
 		-C /tmp/installdir-$(NAME)-$(VERSION) \
 		-m $(MAINTAINER) \
 		--replaces llvm-devel \
+		--replaces lldb-devel \
+		--replaces clang-devel \
 		--epoch 1 \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
