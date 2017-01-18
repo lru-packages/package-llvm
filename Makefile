@@ -9,8 +9,11 @@ MAINTAINER="Ryan Parman"
 DESCRIPTION="The LLVM Project is a collection of modular and reusable compiler and toolchain technologies."
 URL=https://llvm.org
 RHEL=$(shell rpm -q --queryformat '%{VERSION}' centos-release)
-
 COMMIT=$(shell echo "$(VERSION)" | sed -e "s/\.//g")
+
+# https://www.vultr.com/docs/how-to-install-llvm-and-clang-on-centos-6
+# http://btorpey.github.io/blog/2015/01/02/building-clang/
+# http://www.linuxfromscratch.org/blfs/view/cvs/general/llvm.html
 
 #-------------------------------------------------------------------------------
 
@@ -139,35 +142,38 @@ compile:
 				-DLLVM_BUILD_LLVM_DYLIB=ON \
 				-DLLVM_LINK_LLVM_DYLIB=ON \
 				-DLLVM_ENABLE_FFI=ON \
-				-DLLVM_ENABLE_PROJECTS="all" \
+				-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;compiler-rt;lld;polly" \
 				-DLLVM_TARGETS_TO_BUILD="X86" \
 				-DLLVM_BUILD_DOCS=OFF \
 				-DLLVM_ENABLE_DOXYGEN=OFF \
-				-DLLVM_ENABLE_SPHINX=OFF \
-				-DLLVM_INCLUDE_TESTS=ON \
-				-DLLVM_BUILD_TESTS=ON \
-				-DLLVM_ENABLE_EH=ON \
-				-DLLVM_OPTIMIZED_TABLEGEN=ON \
-				-Wno-dev .. && \
-			make && \
-			make check-polly && \
-			make omp && \
-			cmake \
 				-DLLVM_ENABLE_SPHINX=ON \
 				-DSPHINX_OUTPUT_HTML=ON \
 				-DSPHINX_OUTPUT_MAN=ON \
 				-DSPHINX_WARNINGS_AS_ERRORS=OFF \
+				-DLLVM_INCLUDE_TESTS=ON \
+				-DLLVM_BUILD_TESTS=ON \
+				-DLLVM_ENABLE_EH=ON \
+				-DLLVM_ENABLE_RTTI=ON \
+				-DLLVM_OPTIMIZED_TABLEGEN=ON \
 				-Wno-dev .. && \
+			make && \
 			make \
 				docs-llvm-html \
 				docs-llvm-man \
+				clang \
 				docs-clang-html \
 				docs-clang-man \
-			&& \
-			cmake -G Ninja .. && \
-				ninja lldb && \
-				ninja check-lldb && \
-			make lldb-python-doc lldb-cpp-doc \
+				docs-clang-tools-html \
+				docs-clang-tools-man \
+				lldb \
+				lldb-cpp-doc \
+				lld \
+				docs-lld-html \
+				omp \
+				compiler-rt \
+				docs-libcxx-html \
+				docs-polly-html \
+				docs-polly-man \
 	;
 
 #-------------------------------------------------------------------------------
