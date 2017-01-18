@@ -174,6 +174,8 @@ compile:
 				docs-libcxx-html \
 				docs-polly-html \
 				docs-polly-man \
+			&& \
+			mv -v ./lib64/* ./lib/ \
 	;
 
 #-------------------------------------------------------------------------------
@@ -191,7 +193,7 @@ package:
 
 	# Main package
 	fpm \
-		-f \
+		-d "$(NAME)-libs = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
 		-s dir \
 		-t rpm \
 		-n $(NAME) \
@@ -199,13 +201,6 @@ package:
 		-C /tmp/installdir-$(NAME)-$(VERSION) \
 		-m $(MAINTAINER) \
 		--replaces llvm \
-		--replaces llvm-devel \
-		--replaces llvm-doc \
-		--replaces llvm-libs \
-		--replaces llvm-ocaml \
-		--replaces llvm-ocaml-devel \
-		--replaces llvm-ocaml-doc \
-		--replaces llvm-static \
 		--epoch $(EPOCH) \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
@@ -221,8 +216,88 @@ package:
 		--rpm-dist el$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/bin \
-		usr/local/include \
+	;
+
+	# Libs package
+	fpm \
+		-s dir \
+		-t rpm \
+		-n $(NAME)-libs \
+		-v $(VERSION) \
+		-C /tmp/installdir-$(NAME)-$(VERSION) \
+		-m $(MAINTAINER) \
+		--replaces llvm-libs \
+		--epoch $(EPOCH) \
+		--iteration $(ITERATION) \
+		--license $(LICENSE) \
+		--vendor $(VENDOR) \
+		--prefix / \
+		--url $(URL) \
+		--description $(DESCRIPTION) \
+		--rpm-defattrdir 0755 \
+		--rpm-digest md5 \
+		--rpm-compression gzip \
+		--rpm-os linux \
+		--rpm-changelog CHANGELOG.txt \
+		--rpm-dist el$(RHEL) \
+		--rpm-auto-add-directories \
 		usr/local/lib \
+		usr/local/libexec \
+	;
+
+	# Development package
+	fpm \
+		-f \
+		-d "$(NAME) = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
+		-s dir \
+		-t rpm \
+		-n $(NAME)-devel \
+		-v $(VERSION) \
+		-C /tmp/installdir-$(NAME)-$(VERSION) \
+		-m $(MAINTAINER) \
+		--replaces llvm-devel \
+		--epoch 1 \
+		--iteration $(ITERATION) \
+		--license $(LICENSE) \
+		--vendor $(VENDOR) \
+		--prefix / \
+		--url $(URL) \
+		--description $(DESCRIPTION) \
+		--rpm-defattrdir 0755 \
+		--rpm-digest md5 \
+		--rpm-compression gzip \
+		--rpm-os linux \
+		--rpm-changelog CHANGELOG.txt \
+		--rpm-dist el$(RHEL) \
+		--rpm-auto-add-directories \
+		usr/local/include \
+	;
+
+	# Documentation package
+	fpm \
+		-d "$(NAME) = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
+		-s dir \
+		-t rpm \
+		-n $(NAME)-doc \
+		-v $(VERSION) \
+		-C /tmp/installdir-$(NAME)-$(VERSION) \
+		-m $(MAINTAINER) \
+		--replaces llvm-doc \
+		--epoch 1 \
+		--iteration $(ITERATION) \
+		--license $(LICENSE) \
+		--vendor $(VENDOR) \
+		--prefix / \
+		--url $(URL) \
+		--description $(DESCRIPTION) \
+		--rpm-defattrdir 0755 \
+		--rpm-digest md5 \
+		--rpm-compression gzip \
+		--rpm-os linux \
+		--rpm-changelog CHANGELOG.txt \
+		--rpm-dist el$(RHEL) \
+		--rpm-auto-add-directories \
+		usr/local/share \
 	;
 
 #-------------------------------------------------------------------------------
