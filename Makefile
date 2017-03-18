@@ -46,7 +46,6 @@ clean:
 
 .PHONY: install-deps
 install-deps:
-
 	yum -y install \
 		bc \
 		bison \
@@ -85,6 +84,7 @@ install-deps:
 		doxygen \
 		flex \
 		gcc \
+		gcc6 \
 		git \
 		golang \
 		graphviz \
@@ -96,6 +96,7 @@ install-deps:
 		ncurses-devel \
 		python-devel \
 		python27 \
+		python27-devel \
 		sed \
 		subversion \
 		swig \
@@ -104,6 +105,8 @@ install-deps:
 		zip \
 		zlib-devel \
 	;
+	
+	pip install sphinx;
 
 #-------------------------------------------------------------------------------
 
@@ -143,7 +146,8 @@ compile:
 	cd llvm* && \
 		mkdir -p build && \
 		cd build && \
-			CC=gcc CXX=g++ \
+			CC=/usr/local/bin/gcc \
+			CXX=/usr/local/bin/g++ \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_BUILD_TYPE=Release \
 				-DLLVM_BUILD_LLVM_DYLIB=ON \
