@@ -146,8 +146,8 @@ compile:
 	cd llvm* && \
 		mkdir -p build && \
 		cd build && \
-			CC=/usr/local/bin/gcc \
-			CXX=/usr/local/bin/g++ \
+			CC=/bin/gcc \
+			CXX=/bin/g++ \
 			cmake -G "Unix Makefiles" \
 				-DCMAKE_BUILD_TYPE=Release \
 				-DLLVM_BUILD_LLVM_DYLIB=ON \
