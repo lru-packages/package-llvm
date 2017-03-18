@@ -111,7 +111,7 @@ install-deps:
 fetch:
 	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz && \
 	tar -xvf llvm-$(VERSION).src.tar.xz && \
-	git clone -q -b svn-tags/RELEASE_391 https://github.com/llvm-mirror/polly.git && \
+	git clone -q -b svn-tags/RELEASE_$(COMMIT) https://github.com/llvm-mirror/polly.git && \
 	cd llvm* && \
 		cd tools && \
 			svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
