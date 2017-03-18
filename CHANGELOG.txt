@@ -1,3 +1,6 @@
+* Fri Mar 17 2017 Ryan Parman <ryan@ryanparman.com> 4.0.0-1
+- Bundles LLVM 4.0.0.
+
 * Tue Jan 17 2017 Ryan Parman <ryan@ryanparman.com> 3.9.1-1
 - Initial release of the RPM.
 - Bundles LLVM 3.9.1.
