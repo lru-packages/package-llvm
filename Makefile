@@ -115,6 +115,10 @@ fetch:
 	svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
 	svn co http://llvm.org/svn/llvm-project/lldb/tags/RELEASE_$(COMMIT)/final lldb && \
 	svn co http://llvm.org/svn/llvm-project/lld/tags/RELEASE_$(COMMIT)/final lld && \
+	svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
+	svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx && \
+	svn co http://llvm.org/svn/llvm-project/libcxxabi/tags/RELEASE_$(COMMIT)/final libcxxabi && \
+	svn co http://llvm.org/svn/llvm-project/openmp/tags/RELEASE_$(COMMIT)/final openmp \
 	cd llvm* && \
 		cd tools && \
 			cp -Rvf ../../clang ./clang && \
@@ -126,10 +130,10 @@ fetch:
 			svn co http://llvm.org/svn/llvm-project/clang-tools-extra/tags/RELEASE_$(COMMIT)/final extra && \
 		cd ../../.. && \
 		cd projects && \
-			svn co http://llvm.org/svn/llvm-project/compiler-rt/tags/RELEASE_$(COMMIT)/final compiler-rt && \
-			svn co http://llvm.org/svn/llvm-project/libcxx/tags/RELEASE_$(COMMIT)/final libcxx && \
-			svn co http://llvm.org/svn/llvm-project/libcxxabi/tags/RELEASE_$(COMMIT)/final libcxxabi && \
-			svn co http://llvm.org/svn/llvm-project/openmp/tags/RELEASE_$(COMMIT)/final openmp \
+			cp -Rvf ../../compiler-rt ./compiler-rt && \
+			cp -Rvf ../../libcxx ./libcxx && \
+			cp -Rvf ../../libcxxabi ./libcxxabi && \
+			cp -Rvf ../../openmp ./openmp && \
 	;
 
 #-------------------------------------------------------------------------------
