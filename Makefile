@@ -89,6 +89,7 @@ install-deps:
 		golang \
 		graphviz \
 		gzip \
+		libatomic \
 		libcap-devel \
 		libedit-devel \
 		libxml2-devel \
