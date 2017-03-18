@@ -133,7 +133,7 @@ fetch:
 			cp -Rvf ../../compiler-rt ./compiler-rt && \
 			cp -Rvf ../../libcxx ./libcxx && \
 			cp -Rvf ../../libcxxabi ./libcxxabi && \
-			cp -Rvf ../../openmp ./openmp && \
+			cp -Rvf ../../openmp ./openmp \
 	;
 
 #-------------------------------------------------------------------------------
