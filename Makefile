@@ -112,11 +112,14 @@ fetch:
 	wget http://releases.llvm.org/$(VERSION)/llvm-$(VERSION).src.tar.xz && \
 	tar -xvf llvm-$(VERSION).src.tar.xz && \
 	git clone -q -b svn-tags/RELEASE_$(COMMIT) https://github.com/llvm-mirror/polly.git && \
+	svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
+	svn co http://llvm.org/svn/llvm-project/lldb/tags/RELEASE_$(COMMIT)/final lldb && \
+	svn co http://llvm.org/svn/llvm-project/lld/tags/RELEASE_$(COMMIT)/final lld && \
 	cd llvm* && \
 		cd tools && \
-			svn co http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_$(COMMIT)/final clang && \
-			svn co http://llvm.org/svn/llvm-project/lldb/tags/RELEASE_$(COMMIT)/final lldb && \
-			svn co http://llvm.org/svn/llvm-project/lld/tags/RELEASE_$(COMMIT)/final lld && \
+			cp -Rvf ../../clang ./clang && \
+			cp -Rvf ../../lldb ./lldb && \
+			cp -Rvf ../../lld ./lld && \
 			cp -Rvf ../../polly/final ./polly && \
 		cd .. && \
 		cd tools/clang/tools/ && \
