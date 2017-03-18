@@ -40,7 +40,7 @@ info:
 
 .PHONY: clean
 clean:
-	rm -Rf /tmp/installdir* llvm* polly*
+	rm -Rf /tmp/installdir* llvm* clang compiler-rt libcxx libcxxabi lld lldb openmp polly
 
 #-------------------------------------------------------------------------------
 
