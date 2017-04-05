@@ -1,7 +1,6 @@
 NAME=llvm
 VERSION=4.0.0
-EPOCH=1
-ITERATION=1
+ITERATION=1.lru
 PREFIX=/usr/local
 LICENSE=NCSA
 VENDOR="LLVM Team"
@@ -25,7 +24,6 @@ all: info clean install-deps fetch compile install-tmp package move
 info:
 	@ echo "NAME:        $(NAME)"
 	@ echo "VERSION:     $(VERSION)"
-	@ echo "EPOCH:       $(EPOCH)"
 	@ echo "ITERATION:   $(ITERATION)"
 	@ echo "PREFIX:      $(PREFIX)"
 	@ echo "LICENSE:     $(LICENSE)"
@@ -215,7 +213,6 @@ package:
 		--replaces llvm \
 		--replaces lldb \
 		--replaces clang \
-		--epoch $(EPOCH) \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
 		--vendor $(VENDOR) \
@@ -241,7 +238,6 @@ package:
 		-C /tmp/installdir-$(NAME)-$(VERSION) \
 		-m $(MAINTAINER) \
 		--replaces llvm-libs \
-		--epoch $(EPOCH) \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
 		--vendor $(VENDOR) \
@@ -272,7 +268,6 @@ package:
 		--replaces llvm-devel \
 		--replaces lldb-devel \
 		--replaces clang-devel \
-		--epoch 1 \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
 		--vendor $(VENDOR) \
@@ -299,7 +294,6 @@ package:
 		-C /tmp/installdir-$(NAME)-$(VERSION) \
 		-m $(MAINTAINER) \
 		--replaces llvm-doc \
-		--epoch 1 \
 		--iteration $(ITERATION) \
 		--license $(LICENSE) \
 		--vendor $(VENDOR) \
