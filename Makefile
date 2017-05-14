@@ -7,7 +7,9 @@ VENDOR="LLVM Team"
 MAINTAINER="Ryan Parman"
 DESCRIPTION="The LLVM Project is a collection of modular and reusable compiler and toolchain technologies."
 URL=https://llvm.org
-RHEL=$(shell rpm -q --queryformat '%{VERSION}' centos-release)
+ACTUALOS=$(shell osqueryi "select * from os_version;" --json | jq -r ".[].name")
+EL=$(shell if [[ "$(ACTUALOS)" == "Amazon Linux AMI" ]]; then echo alami; else echo el; fi)
+RHEL=$(shell [[ -f /etc/centos-release ]] && rpm -q --queryformat '%{VERSION}' centos-release)
 COMMIT=$(shell echo "$(VERSION)" | sed -e "s/\.//g")
 
 # https://www.vultr.com/docs/how-to-install-llvm-and-clang-on-centos-6
@@ -31,6 +33,8 @@ info:
 	@ echo "MAINTAINER:  $(MAINTAINER)"
 	@ echo "DESCRIPTION: $(DESCRIPTION)"
 	@ echo "URL:         $(URL)"
+	@ echo "OS:          $(ACTUALOS)"
+	@ echo "EL:          $(EL)"
 	@ echo "RHEL:        $(RHEL)"
 	@ echo " "
 
@@ -203,7 +207,7 @@ package:
 
 	# Main package
 	fpm \
-		-d "$(NAME)-libs = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
+		-d "$(NAME)-libs = $(VERSION)-$(ITERATION).$(EL)$(RHEL)" \
 		-s dir \
 		-t rpm \
 		-n $(NAME) \
@@ -224,7 +228,7 @@ package:
 		--rpm-compression gzip \
 		--rpm-os linux \
 		--rpm-changelog CHANGELOG.txt \
-		--rpm-dist el$(RHEL) \
+		--rpm-dist $(EL)$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/bin \
 	;
@@ -249,7 +253,7 @@ package:
 		--rpm-compression gzip \
 		--rpm-os linux \
 		--rpm-changelog CHANGELOG.txt \
-		--rpm-dist el$(RHEL) \
+		--rpm-dist $(EL)$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/lib \
 		usr/local/libexec \
@@ -258,7 +262,7 @@ package:
 	# Development package
 	fpm \
 		-f \
-		-d "$(NAME) = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
+		-d "$(NAME) = $(VERSION)-$(ITERATION).$(EL)$(RHEL)" \
 		-s dir \
 		-t rpm \
 		-n $(NAME)-devel \
@@ -279,14 +283,14 @@ package:
 		--rpm-compression gzip \
 		--rpm-os linux \
 		--rpm-changelog CHANGELOG.txt \
-		--rpm-dist el$(RHEL) \
+		--rpm-dist $(EL)$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/include \
 	;
 
 	# Documentation package
 	fpm \
-		-d "$(NAME) = $(EPOCH):$(VERSION)-$(ITERATION).el$(RHEL)" \
+		-d "$(NAME) = $(VERSION)-$(ITERATION).$(EL)$(RHEL)" \
 		-s dir \
 		-t rpm \
 		-n $(NAME)-doc \
@@ -305,7 +309,7 @@ package:
 		--rpm-compression gzip \
 		--rpm-os linux \
 		--rpm-changelog CHANGELOG.txt \
-		--rpm-dist el$(RHEL) \
+		--rpm-dist $(EL)$(RHEL) \
 		--rpm-auto-add-directories \
 		usr/local/share \
 	;
@@ -314,4 +318,4 @@ package:
 
 .PHONY: move
 move:
-	mv *.rpm /vagrant/repo/
+	[[ -d /vagrant/repo ]] && mv *.rpm /vagrant/repo/
